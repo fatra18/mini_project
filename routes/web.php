@@ -13,6 +13,51 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function(){
+    return view('index');
 });
+
+Route::get('/user', function () {
+    return view('users.index');
+});
+Route::get('/user/edit', function () {
+    return view('users.edit');
+});
+Route::get('/user/create', function () {
+    return view('users.create');
+});
+
+Route::get('/category', function () {
+    return view('category.index');
+});
+Route::get('/category/create', function () {
+    return view('category.create');
+});
+Route::get('/category/edit', function () {
+    return view('category.edit');
+});
+
+
+Route::get('/article', function () {
+    return view('articles.index');
+});
+
+
+Route::get('/article/edit', function () {
+    return view('articles.edit');
+});
+
+
+Route::get('/article/create', function () {
+    return view('articles.create');
+});
+
+
+
+
+
+
+
+
+
+    
