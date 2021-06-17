@@ -3,8 +3,16 @@
 @section('active3','active')
 @section('title','Article')
 @section('content')
-<button class="btn btn-success mb-5 "><a href="user/create" class="text-light">Create Article</a></button>
-
+<button class="btn btn-success mb-5 "><a href="article/create" class="text-light">Create Article</a></button>
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 <div class="row" id="table-hover-row">
     <div class="col-12">
         <div class="card">
@@ -27,19 +35,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="col-12">
-                                <td class="text-bold-500 col-1">1</td>
-                                <td class="col-2">Makanan</td>
-                                <td class="text-bold-500 col-1">11</td>
-                                <td class="col-2"></td>
-                                <td class="col-2">Austin,Taxes</td>
-                                <td class="col-2">
-                                    <button class="btn btn-primary "><a href="user/edit" class="text-light">Edit</a></button>
-                                    <button class="btn btn-danger "><a href="" class="text-light">Delete</a></button>
-                                
-                                </td>
-                            </tr>
-                          
+                            @foreach ($data as $item )
+                                <tr class="col-12">
+                                    <td class="text-bold-500 col-1">{{ $item->user->name }}</td>
+                                    <td class="col-2">{{ $item->category->name}}</td>
+                                    <td class="text-bold-500 col-1">{{ $item->title }}</td>
+                                    <td class="col-2">{{ $item->content }}</td>
+                                    <td class="col-2">{{ $item->image }}</td>
+                                    <td>
+                                        <button class="btn btn-primary "><a href="{{route('article.edit', $item->id)}}" class="text-light">Edit</a></button>
+                                        <form class="d-inline-block" action="{{ route('article.delete',$item->id) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger btn-small">Delete</button>
+                                            @method('DELETE')
+                                        </form>    
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

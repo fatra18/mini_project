@@ -2,6 +2,15 @@
 @section('main_title','Users Edit')
 <div class="me-5">@section('title','Users')</div>
 @section('content')
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 <div class="d-flex justify-content-center">
         <div class="col-md-8 col-12  ">
             <div class="card">
@@ -10,16 +19,18 @@
                 </div>
                 <div class="card-content">
                     <div class="card-body">
-                        <form class="form form-horizontal">
+                        <form class="form form-horizontal" method="POST" action="{{ route('users.update',$data->id) }}">
+                            @csrf
+                            @method('PUT')
                             <div class="form-body">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <label>Name</label>
+                                        <label>Full Name</label>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="form-group has-icon-left">
                                             <div class="position-relative">
-                                                <input type="text" class="form-control"
+                                                <input type="text" class="form-control" name="name"  value="{{ old('name',$data->name) }}"
                                                     placeholder="Name" id="first-name-icon">
                                                 <div class="form-control-icon">
                                                     <i class="bi bi-person"></i>
@@ -33,7 +44,7 @@
                                     <div class="col-md-8">
                                         <div class="form-group has-icon-left">
                                             <div class="position-relative">
-                                                <input type="email" class="form-control"
+                                                <input type="email" class="form-control" name="email" value="{{ old('email',$data->email) }}"
                                                     placeholder="Email" id="first-name-icon">
                                                 <div class="form-control-icon">
                                                     <i class="bi bi-envelope"></i>
@@ -42,29 +53,57 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <label>Mobile</label>
+                                        <label>Current Password</label>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="form-group has-icon-left">
                                             <div class="position-relative">
-                                                <input type="number" class="form-control"
-                                                    placeholder="Mobile">
+                                                <input type="password" class="form-control" name="current_password" 
+                                                    placeholder="Password">
                                                 <div class="form-control-icon">
-                                                    <i class="bi bi-phone"></i>
+                                                    <i class="bi bi-lock"></i>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <label>Password</label>
+                                        <label>New Password</label>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="form-group has-icon-left">
                                             <div class="position-relative">
-                                                <input type="password" class="form-control"
+                                                <input type="password" class="form-control" name="password" 
                                                     placeholder="Password">
                                                 <div class="form-control-icon">
                                                     <i class="bi bi-lock"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Retype Password</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group has-icon-left">
+                                            <div class="position-relative">
+                                                <input type="password" class="form-control" name="password_confirmation"
+                                                    placeholder="Password">
+                                                <div class="form-control-icon">
+                                                    <i class="bi bi-lock"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Image</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group has-icon-left">
+                                            <div class="position-relative">
+                                                <input type="file" class="form-control" value="{{ old('email',$data->image) }}"
+                                                    placeholder="Password" name="image">
+                                                <div class="form-control-icon">
+                                                    <i class="bi bi-card-image"></i>
                                                 </div>
                                             </div>
                                         </div>
