@@ -3,10 +3,11 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DetailController;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use voku\helper\ASCII;
@@ -22,14 +23,25 @@ use voku\helper\ASCII;
 |
 */
 
+
+    Route::get('/login',[AuthController::class,'login'])->name('login');
+    Route::get('/register',[AuthController::class,'register'])->name('register');
+    Route::post('/logout',[AuthController::class,'logout'])->name('logout');
+    Route::post('/loginProcess',[AuthController::class,'loginProcess'])->name('loginProcess');
+    Route::post('/registerProcess',[AuthController::class,'registerProcess'])->name('registerProcess');
+
+
+Route::prefix('home')->group(function(){
+
+Route::get('/page', [GuestController::class,'home'])->name('home');
+Route::get('/search', [GuestController::class,'search'])->name('search');
+Route::get('/detail/{id}', [GuestController::class,'show'])->name('detail.page');
+
+});
+
 Route::get('/admin', function(){
     return view('index');
 });
-
-Route::get('/', [GuestController::class,'home'])->name('home');
-Route::get('/search', [GuestController::class,'search'])->name('search');
-Route::get('home/detail/{id}', [GuestController::class,'show'])->name('detail.page');
-
 
 Route::prefix('admin')->group(function(){
 

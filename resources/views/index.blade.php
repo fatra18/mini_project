@@ -211,11 +211,29 @@
                         <div class="card-body py-4 px-5">
                             <div class="d-flex align-items-center">
                                 <div class="avatar avatar-xl">
-                                    <img src="dist/assets/images/faces/1.jpg" alt="Face 1">
+                                    <img src="/profile/{{ Auth::user()->image }}" alt="Face 1">
                                 </div>
                                 <div class="ms-3 name">
-                                    <h5 class="font-bold">John Duck</h5>
-                                    <h6 class="text-muted mb-0">@johnducky</h6>
+                                    <h5 class="font-bold">{{ Auth::user()->name }}</h5>
+                                    <h6 class="text-muted mb-0 w-50">{{ Auth::user()->email }}</h6>
+                                </div>
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <div class="btn-group mb-1">
+                                            <div class="dropdown">
+                                                <button class="btn btn-primary dropdown-toggle me-1" type="button"
+                                                    id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    Primary
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item" href="#">Option 1</a>
+                                                    <a class="dropdown-item" href="#">Option 2</a>
+                                                    <a class="dropdown-item" href="#">Option 3</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
