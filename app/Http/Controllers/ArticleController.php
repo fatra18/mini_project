@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ArticleRequest;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\User;
@@ -11,8 +12,8 @@ class ArticleController extends Controller
 {
     public function index()
     {
-        $data = Article::all();
-        //  dd($data);  
+        $data = Article::with('user','category')->get();
+        //  dd($data->toArray());  
         return view('articles.index',compact('data'));
     }
 
@@ -68,13 +69,8 @@ class ArticleController extends Controller
         $categories = Category::all();
         return view('articles.create',compact('users','categories'));
     }
-    public function store(Request $request){
-        // $request->validate([
-        //     'name' => 'required|min:8|max:25',
-        //     'email' => 'required|min:8|max:25|email:rfc,dns',
-        //     'password' => 'required|min:8|max:25|confirmed',
-        //     'image' =>'required',
-        // ]);
+    public function store(ArticleRequest $request){
+       
         // dd($request->all());
         // User::create([
         //     // 'id' => $request->id,
@@ -88,30 +84,112 @@ class ArticleController extends Controller
         //     // 'id' => $request->id,
         //     'name' => $request->name,
         // ]);
-        
-        Article::create($request->all());
+        // dd($request)->file('image');
+        $image_file = $this->uploudImage($request->file('image'));
+        // $image_file = $request->file('image_file')->store('img','public');
+            // dd($image_file);
+        // $request->merge([
+        //     'image' =>$image_file
+        // ]);
+        $request = $request->all();
+        $request['image'] = $image_file;
+        Article::create($request);
+        return redirect()->route('articles.index')->with('sukses-store','Data berhasil');
+        return redirect()->route('articles.index');
         // User::create($request->all());
         // Category::create($request->all());
-        return redirect()->route('article.index');
     }
-    public function edit($id){
-        $categories = Category::find($id);
-        $users = User::find($id);
+
+    public function show($id)
+    {
         $data = Article::find($id);
+        // $data = [
+        //     'article' =>$this->Article->detailData($id),
+        // ]; 
+        return view('articles.show',compact('data'));       
+
+
+    }
+    
+    
+    public function edit($id){
+        $categories = Category::all();
+        $users = User::all();
+        $data = Article::findOrFail($id);
         return view('articles.edit',compact('categories','users','data'));
     }
 
 
     public function update(Request $request,$id)
-    {
-        Article::find($request->id)->update([
-            'title' =>$request->title,
-            'content'=>$request->content,
-            'image'=>$request->image,
-            'user_id'=>$request->user_id,
-            'category_id'=>$request->category_id,
+    {   
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'user_id' => 'required',
+            'category_id' => 'required',
         ]);
+        $data = Article::find($id);
+        if($request->file('image') == null){
+            // dd('ngak ada');
+            $request = $request->all();
+            $request['image'] = $data->image;
+        }else {
+            // dd('ada');
+            $this->removeImage($data->image);
+            $image_file = $this->uploudImage($request->image);
+            $request = $request->all();
+            $request['image'] = $image_file;
+        }
+        $data->update($request);
+        return redirect()->route('articles.index');
     }
+        // {
+        //     unlink('profile/'.$ubah->image);
+        //     $gambar = $request->file('image');
+        //     $UbahExtensi = $gambar->getClientOriginalExtension();
+        //     $baru = time(). '.' .$UbahExtensi;
+        //     $gambar->move('profile',$baru);
+        //     $ubah->image = $baru;
+        // }
+        // $img_path = public_path('profile/' . $ubah->image);
+        // if (file_exists($img_path)) {
+        //     unlink($img_path);
+        // }
+        // $data = Article::find($id);
+        // Article::find($request->id)->update([
+        //     'title' =>$request->title,
+        //     'content'=>$request->content,
+        //     'image'=>$request->image,
+        //     'user_id'=>$request->user_id,
+        //     'category_id'=>$request->category_id,
+        // ]);
+        // $data->update($request->all());
       
-   }     
+       
+        public function destroy($id){
+        $data = Article::findOrFail($id);
+        $this->removeImage($data->image);
+        $data->delete();
+        return back();
+
+        return redirect()->route('articles.index');
+        }
+       
+        public function uploudImage($image)
+        {
+        // $image = $request->file('image_file');
+        $new_name_image = time() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path('profile'),$new_name_image);
+        return $new_name_image;
+        }
+
+        public function removeImage($image)
+        {
+            if (file_exists('profile/'.$image)){
+
+                unlink('profile/'.$image);
+            }
+        }
+
+        }         
        

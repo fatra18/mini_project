@@ -11,7 +11,7 @@
         </ul>
     </div>
 @endif
-<form class="form form-horizontal" method="POST" action="{{ route('article.store') }}">
+<form class="form form-horizontal" method="POST" action="{{ route('articles.store') }}" enctype="multipart/form-data">
     @csrf
     @method('POST')
     <div class="col-md-6 mb-4">
@@ -58,7 +58,7 @@
 
     <div class="form-group w-50 ms-4">
         <label for="basicInput">Image</label>
-        <input type="file" class="form-control" id="basicInput"name="image" type="text"  value="{{ old('image') }}"
+        <input type="file" class="form-control" id="basicInput"name="image" type="file"  value="{{ old('image') }}"
             placeholder="Image">
     </div>
     <div class="col-12 d-flex justify-content-center">

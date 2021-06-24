@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('main_title','Article Create')
+@section('main_title','Article edit')
 @section('title','Article')
 @section('content')
 @if ($errors->any())
@@ -11,15 +11,15 @@
         </ul>
     </div>
 @endif
-<form class="form form-horizontal" method="POST" action="{{ route('article.update',$data->id) }}">
+<form class="form form-horizontal" method="POST" action="{{ route('articles.update',$data->id) }}" enctype="multipart/form-data" >
     @csrf
     @method('PUT')
     <div class="col-md-6 mb-4">
         <h6 class="ms-4">User_id</h6>
         <fieldset class="form-group ms-4">
             <select class="form-select" id="basicSelect" name="user_id" type="text" id="category_id" value="{{ old('user_id') }}">
-              @foreach ( $categories as $category )
-              <option value="{{ $category->id}}">{{ $category->id }}</option>
+              @foreach ( $users as $user )
+              <option value="{{ $user->id}}">{{ $user->name }}</option>
               @endforeach
               {{-- <option value="1">1</option>
               <option value="2">2</option> --}}
@@ -30,8 +30,8 @@
         <h6 class="ms-4">Category_id</h6>
         <fieldset class="form-group ms-4">
             <select class="form-select" id="basicSelect" name="category_id" type="text" id="category_id" value="{{ old('category_id') }}">
-                @foreach ( $users as $user )
-                <option value="{{ $user->id}}">{{ $user->id }}</option>
+                @foreach ( $categories as  $category )
+                <option value="{{ $category->id}}"{{$category->id == $data->category_id ? 'selected' : '' }}>{{ $category->name }}</option>
                 @endforeach
                     {{-- <option value="1">1</option>
                     <option value="2">2</option> --}}
@@ -50,15 +50,14 @@
         <div class="form-group mb-3 w-75">
             <label for="exampleFormControlTextarea1" class="form-label">Content
                 </label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" name="content" type="text"  value="{{ old('content',$data->content)}}"
-                rows="3"></textarea>
+            <textarea class="form-control" id="exampleFormControlTextarea1" name="content" type="text">{{ $data->content }}</textarea>  
         </div>
     </div>
 
 
     <div class="form-group w-50 ms-4">
         <label for="basicInput">Image</label>
-        <input type="file" class="form-control" id="basicInput"name="image" type="text"  value="{{ old('image',$data->image) }}"
+        <input type="file" class="form-control" id="basicInput"name="image" type="file"  value="{{ old('image',$data->image) }}"
             placeholder="Image">
     </div>
     <div class="col-12 d-flex justify-content-center">

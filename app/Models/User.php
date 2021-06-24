@@ -24,9 +24,16 @@ class User extends Authenticatable
     ];
     protected $primaryKey ="id";
     
-    public function article()
+    public function articles()
     {
         return $this->hasMany(Article::class);
+        
     }
+
+    
+    // {{-- @foreach ($item->articles as $item)
+    //     <p> {{ $item->content }}</p>
+    // @endforeach --}}
+   
     
 }

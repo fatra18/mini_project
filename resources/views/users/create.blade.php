@@ -95,15 +95,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group col-md-8 offset-md-4">
-                                            <div class='form-check'>
-                                                <div class="checkbox">
-                                                    <input type="checkbox" id="checkbox2"
-                                                        class='form-check-input' checked>
-                                                    <label for="checkbox2">Remember Me</label>
-                                                </div>
-                                            </div>
-                                        </div>
+                                       
                                         <div class="col-12 d-flex justify-content-end">
                                             <button type="submit"
                                                 class="btn btn-primary me-1 mb-1">Submit</button>

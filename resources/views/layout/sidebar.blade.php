@@ -1,23 +1,26 @@
 @php
+$current_path = '/'.request()->path();
+
+// dd($current_path);
 
 $dashboard = [
     'title' =>'Dashboard',
     'icon' => 'bi bi-person-fill',
-    'url' =>'/',
+    'url' =>'/admin/dashboard',
 ];
 
 $users = [
     'title' =>'Users',
     'url' =>'#',
     'icon' => 'bi bi-person-fill',
-    'children'=> [
+    'childrens'=> [
         [
             'title'=> 'List User',
-            'url' =>'/users'
+            'url' =>'/admin/users'
         ],
         [
             'title'=>'Create User',
-            'url' =>'/users/create'
+            'url' =>'/admin/users/create'
         ],
     
     ]
@@ -27,14 +30,14 @@ $category = [
     'title' =>'Category',
     'url' =>'#',
     'icon' => 'bi bi-person-fill',
-    'children'=>[
+    'childrens'=>[
         [
             'title'=> 'List User',
-            'url' =>'/category'
+            'url' =>'/admin/category'
         ],
         [
             'title'=>'Create User',
-            'url' =>'/category/create'
+            'url' =>'/admin/category/create'
         ],
     
     ]
@@ -42,16 +45,16 @@ $category = [
 
 $article = [
     'title' =>'Article',
-    'url' =>'#',
+    'url' =>'admin/article*',
     'icon' =>'bi bi-person-fill',
-    'children'=>[
+    'childrens'=>[
         [
             'title'=> 'List Article',
-            'url' =>'/article'
+            'url' =>'/admin/articles'
         ],
         [
             'title'=>'Create Article',
-            'url' =>'/article/create'
+            'url' =>'/admin/articles/create'
         ],
     
     ]
@@ -81,14 +84,26 @@ $menus = [$dashboard,$users,$category,$article];
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
                 @foreach ($menus as $index => $menu)
-                    @if (isset($menu['children']))
-                        <li class="sidebar-item has-sub ">
+                    @if (isset($menu['childrens']))
+                    @php
+                        $isActive = false;
+
+                        foreach ($menu['childrens'] as $child) {
+                            if($child['url'] == $current_path)
+                            {
+                                $isActive = true;
+                            }
+                        }
+                    @endphp
+                    
+                        {{-- <li class="sidebar-item has-sub {{ $current_path == $menu['url'] ? 'active' : '' }}"> --}}
+                        <li class="sidebar-item has-sub {{$isActive ? 'active' : '' }}">
                             <a href="{{ $menu['url'] }}" class='sidebar-link'>
                                 <i class="{{ $menu['icon']  }}"></i>
                                 <span>{{ $menu['title'] }}</span>
                             </a>
-                            <ul class="submenu">
-                                @foreach ($menu['children'] as $item)
+                            <ul class="submenu {{ $isActive ? 'active' : '' }}">
+                                @foreach ($menu['childrens'] as $item)
                                     <li class="submenu-item">
                                         <a href="{{ $item['url'] }}">{{ $item['title'] }}</a>
                                     </li>
@@ -96,7 +111,7 @@ $menus = [$dashboard,$users,$category,$article];
                             </ul>
                         </li>
                     @else
-                        <li class="sidebar-item">
+                        <li class="sidebar-item{{ $current_path == $menu['url'] ? 'active' : ''}}">
                             <a href="{{ $menu['url'] }}" class='sidebar-link'>
                                 <i class="bi bi-grid-fill"></i>
                                 <span>{{ $menu['title'] }}</span>

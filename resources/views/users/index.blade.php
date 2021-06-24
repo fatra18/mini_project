@@ -24,6 +24,7 @@
                                     <th>NAME</th>
                                     <th>Email</th>
                                     <th>Image</th>
+                                    <th>Article</th>
                                     <th>ACTION</th>
                                 </tr>
                             </thead>
@@ -35,10 +36,14 @@
                                         <td class="text-bold-500">{{ $item->name }}</td>
                                         <td>{{ $item->email }}</td>
                                         <td>
-                                            <img src="/profile/{{$item->image }}" alt="image-profile" style="width:60px" height="50">
-                                        
+                                            <img src="/profile/{{ $item->image }}" alt="" class="w-25">                                        
                                         </td>
-                                         
+                                        <td>
+                                            {{ $item->articles->count() }}
+                                             {{-- @foreach ($item->articles as $item)
+                                                    <p> {{ $item->content }}</p>
+                                                 @endforeach --}}
+                                        </td>
                                         <td>
                                             <button class="btn btn-primary "><a href="{{route('users.edit', $item->id)}}" class="text-light">Edit</a></button>
                                             <form class="d-inline-block" action="{{ route('users.delete',$item->id) }}" method="POST">
@@ -47,9 +52,7 @@
                                                 @method('DELETE')
                                             </form>
                                         </td>
-                                        <td><a href="#"><i
-                                            class="badge-circle badge-circle-light-secondary font-medium-1"
-                                            data-feather="mail"></i></a></td>
+                                        
                                     </tr>
                                     
                                 @endforeach

@@ -19,7 +19,7 @@
                 </div>
                 <div class="card-content">
                     <div class="card-body">
-                        <form class="form form-horizontal" method="POST" action="{{ route('users.update',$data->id) }}">
+                        <form class="form form-horizontal" method="POST" action="{{ route('users.update',$data->id) }}"enctype="multipart/form-data" >
                             @csrf
                             @method('PUT')
                             <div class="form-body">
@@ -100,7 +100,7 @@
                                     <div class="col-md-8">
                                         <div class="form-group has-icon-left">
                                             <div class="position-relative">
-                                                <input type="file" class="form-control" value="{{ old('email',$data->image) }}"
+                                                <input type="file" class="form-control" value="{{ old('image',$data->image) }}"
                                                     placeholder="Password" name="image">
                                                 <div class="form-control-icon">
                                                     <i class="bi bi-card-image"></i>
@@ -108,15 +108,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group col-md-8 offset-md-4">
-                                        <div class='form-check'>
-                                            <div class="checkbox">
-                                                <input type="checkbox" id="checkbox2"
-                                                    class='form-check-input' checked>
-                                                <label for="checkbox2">Remember Me</label>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
                                     <div class="col-12 d-flex justify-content-end">
                                         <button type="submit"
                                             class="btn btn-primary me-1 mb-1">Submit</button>
